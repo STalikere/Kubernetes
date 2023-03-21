@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkinspod
+  namespace: samplens
+  labels:
+    app: jenkins
+spec:
+  containers:
+    - image: jenkins/jenkins:lts
+      name: jenkinsimage
+        # - image: nginx
+        # name: nginx

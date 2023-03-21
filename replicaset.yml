@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: jenkinsreplica
+  labels:
+    app: jenkinsreplica
+spec:
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - image: jenkins/jenkins:2.60.1
+          name: jenkinsimage
+        - image: nginx
+          name: nginx 
+
