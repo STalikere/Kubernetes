@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkinsdeploy-pvc
+  labels:
+    app: jenkinsdeploy-pvc
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector: 
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      nodeSelector:
+        env: dev
+      containers:
+        - image: jenkins/jenkins:lts
+          name: jenkinsimage
+          volumeMounts:
+            - name: jenkins-home
+              mountPath: /var/jenkins_home
+          securityContext:
+            allowPrivilegeEscalation: true
+            privileged: true
+            readOnlyRootFilesystem: false
+            runAsUser: 0
+
+      volumes:
+        - name: jenkins-home
+          persistentVolumeClaim:
+            claimName: ebs-claim-demo
+
